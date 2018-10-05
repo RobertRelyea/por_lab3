@@ -1,0 +1,2 @@
+amigo_description:amigo_real:amigo_sim:mypkg:rosaria
+-DCATKIN_DEVEL_PREFIX=/home/ros-admin/amigo_mon/devel -DCMAKE_INSTALL_PREFIX=/home/ros-admin/amigo_mon/install -G Unix Makefiles

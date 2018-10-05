@@ -1,0 +1,8 @@
+prefix=/home/ros-admin/amigo_mon/install
+
+Name: mypkg
+Description: Description of mypkg
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/ros-admin/amigo_mon/install/lib 
+Requires: 

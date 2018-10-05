@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/ros-admin/amigo_mon/devel/setup.sh
