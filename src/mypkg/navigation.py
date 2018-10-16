@@ -23,7 +23,7 @@ def sonarCallback(data):
     
 
 def sonarSub(topic_name='/sonar', callback_name=sonarCallback, node_name="sonar_sub_node", message_object=PointCloud):
-    global cmd_vel_pub
+    global cmd_vel_pub, points
     rospy.init_node(node_name, anonymous=True)
     rospy.Subscriber(topic_name, message_object, callback_name)
     cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
@@ -31,11 +31,11 @@ def sonarSub(topic_name='/sonar', callback_name=sonarCallback, node_name="sonar_
     rate = rospy.Rate(10)
 
     while(not rospy.is_shutdown()):
-        get_vel(points)
+        get_vel()
         rate.sleep()
 
-def get_vel(points):
-    global cmd_vel_pub
+def get_vel():
+    global cmd_vel_pub, points
     net_z = 0
     for point in points:
         x = point[0]
