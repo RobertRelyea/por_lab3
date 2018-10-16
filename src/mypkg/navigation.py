@@ -5,6 +5,7 @@ import rospy
 from sensor_msgs.msg import PointCloud
 from geometry_msgs.msg import Twist
 import math
+import pdb
 
 points = []
 
@@ -37,18 +38,47 @@ def sonarSub(topic_name='/sonar', callback_name=sonarCallback, node_name="sonar_
 def get_vel():
     global cmd_vel_pub, points
     net_z = 0
-    for point in points:
-        x = point[0]
-        y = point[1]
-        net_z += (10 - math.sqrt(x*x + y*y)) * (math.atan2(y,x))
+    # for i in range(len(points)):
+    #     x = points[i].x
+    #     y = points[i].y
+    #     net_z += (10 - math.sqrt(x*x + y*y)) * (math.atan2(y,x))
+
+    left_turn = 0
+    right_turn = 0
+    linear = 0
+
+    if len(points) == 8:
+
+        for i in range(3):
+            x = points[i].x
+            y = points[i].y
+            right_turn += 10 - math.sqrt(x*x + y*y)
+
+        for i in range(3,6):
+            x = points[i].x
+            y = points[i].y
+            left_turn += 10 - math.sqrt(x*x + y*y)
         
-    print(net_z)
-    cmd_vel = Twist()
-    cmd_vel.linear.x = 0.2
-    cmd_vel.angular.z = net_z / 20
 
 
-    cmd_vel_pub.publish(cmd_vel)
+        net_z = left_turn - right_turn
+
+        dist2 = math.sqrt(points[2].x * points[2].x + points[2].y * points[2].y)
+        dist3 = math.sqrt(points[3].x * points[3].x + points[3].y * points[3].y)
+        
+
+        if (dist2 < 0.5 or dist3 < 0.5):
+            linear = 0
+        else:
+            linear = 0.2
+
+        print(net_z)
+        cmd_vel = Twist()
+        cmd_vel.linear.x = linear
+        cmd_vel.angular.z = net_z / 5
+
+
+        cmd_vel_pub.publish(cmd_vel)
 
 
 def main():
